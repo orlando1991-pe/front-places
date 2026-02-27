@@ -2,8 +2,6 @@
   <Navbar />
 
   <div v-if="place" class="pt-24 max-w-4xl mx-auto px-6">
-
-    <!-- Galería -->
     <ImageCarousel 
       :images="place.images || []"
       @click="showModal = true"
@@ -21,8 +19,6 @@
     <p class="mt-4 text-gray-600">
       {{ place.description }}
     </p>
-
-    <!-- Reviews -->
     <div v-if="place.reviews?.length" class="mt-10">
       <h2 class="text-xl font-semibold mb-4">Reseñas</h2>
 
@@ -39,13 +35,10 @@
     </div>
 
   </div>
-
-  <!-- Loading -->
   <div v-else class="pt-32 text-center text-gray-500">
     Cargando...
   </div>
-
-  <!-- Modal -->
+  
   <ImageModal 
     v-if="place"
     :images="place.images || []" 

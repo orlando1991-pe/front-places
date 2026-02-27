@@ -2,23 +2,25 @@
   <Navbar />
 
   <div class="pt-24 max-w-7xl mx-auto px-6">
-
-    <!-- Filtros -->
-    <div class="flex flex-col md:flex-row gap-4 mb-8">
-      <input
+    <form 
+    @submit.prevent="apply"
+    class="relative mb-10"
+    >
+    <input
         v-model="search"
-        placeholder="Buscar lugar..."
-        class="border rounded-lg px-4 py-2 w-full md:w-1/3 focus:ring-2 focus:ring-accent outline-none"
-      />
-      <button
-        @click="apply"
-        class="bg-accent text-white px-6 py-2 rounded-lg hover:opacity-90 transition"
-      >
-        Buscar
-      </button>
-    </div>
+        type="text"
+        placeholder="Buscar destino..."
+        class="w-full border border-gray-300 rounded-full px-6 py-4 pr-28 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
+    />
 
-    <!-- Grid -->
+    <button
+        type="submit"
+        class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+    >
+        Buscar
+    </button>
+    </form>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       <PlaceCard
         v-for="place in store.places"
@@ -66,6 +68,9 @@ onMounted(() => {
 });
 
 function apply() {
-  store.fetchPlaces({ search: search.value });
+  store.fetchPlaces({
+    search: search.value,
+    page: 1
+  });
 }
 </script>
