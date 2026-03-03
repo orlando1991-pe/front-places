@@ -19,19 +19,39 @@
     <p class="mt-4 text-gray-600">
       {{ place.description }}
     </p>
-    <div v-if="place.reviews?.length" class="mt-10">
-      <h2 class="text-xl font-semibold mb-4">Reseñas</h2>
+    
+    <div v-if="place?.reviews?.length" class="mt-12">
+    <h2 class="text-2xl font-semibold mb-6">
+        Reseñas ({{ place.total_reviews }})
+    </h2>
 
-      <div
-        v-for="(review, index) in place.reviews"
+    <transition-group
+        name="fade"
+        tag="div"
+        class="space-y-6"
+    >
+        <div
+        v-for="(review, index) in visibleReviews"
         :key="index"
-        class="border-b py-4"
-      >
-        <div class="text-yellow-500">
-          ⭐ {{ review.rating }}
+        class="border-b pb-4"
+        >
+        <div class="flex items-center gap-2 text-yellow-500 font-medium">
+            ⭐ {{ review.rating }}
         </div>
-        <p class="text-gray-600">{{ review.comment }}</p>
-      </div>
+        <p class="text-gray-600 mt-2">
+            {{ review.comment }}
+        </p>
+        </div>
+    </transition-group>
+
+    <div v-if="place.reviews.length > initialLimit" class="mt-6">
+        <button
+        @click="toggleReviews"
+        class="text-blue-600 font-semibold hover:underline transition"
+        >
+        {{ expanded ? "Ver menos" : `Ver más (${remainingReviews})` }}
+        </button>
+    </div>
     </div>
 
   </div>
@@ -57,6 +77,25 @@ import ImageCarousel from "../components/ImageCarousel.vue";
 import RatingStars from "../components/RatingStars.vue";
 import ImageModal from "../components/ImageModal.vue";
 
+const initialLimit = 3;
+const expanded = ref(false);
+
+const visibleReviews = computed(() => {
+  if (!place.value?.reviews) return [];
+
+  return expanded.value
+    ? place.value.reviews
+    : place.value.reviews.slice(0, initialLimit);
+});
+
+const remainingReviews = computed(() => {
+  return place.value.reviews.length - initialLimit;
+});
+
+function toggleReviews() {
+  expanded.value = !expanded.value;
+}
+
 const route = useRoute();
 const store = usePlaceStore();
 
@@ -68,3 +107,16 @@ onMounted(() => {
   store.fetchPlaceById(route.params.id);
 });
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+</style>

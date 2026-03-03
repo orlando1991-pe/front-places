@@ -1,8 +1,9 @@
 <template>
   <div class="relative overflow-hidden rounded-3xl shadow-xl">
-    <img
-      :src="places[current]?.images?.[0]"
-      class="w-full h-[400px] object-cover transition-all duration-700"
+    <img 
+        v-if="places.length"
+        :src="places[current]?.images?.[0]"
+        class="w-full h-[400px] object-cover transition-all duration-700"
     />
 
     <div class="absolute inset-0 bg-black/40 flex items-end p-8">
@@ -19,22 +20,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { usePlaceStore } from "@/stores/place.store";
 
 const store = usePlaceStore();
+
 const current = ref(0);
 let interval;
 
-const places = store.places;
+const places = computed(() => store.places);
 
 onMounted(async () => {
-  if (!store.places.length) {
+  if (!places.value.length) {
     await store.fetchPlaces({ limit: 5 });
   }
 
   interval = setInterval(() => {
-    current.value = (current.value + 1) % store.places.length;
+    if (places.value.length > 0) {
+      current.value =
+        (current.value + 1) % places.value.length;
+    }
   }, 3000);
 });
 
