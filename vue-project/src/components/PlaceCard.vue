@@ -1,50 +1,41 @@
 <template>
-  <router-link 
-    :to="`/place/${place.id}`"
-    class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden group"
-  >
-    <div class="relative">
-      <img
-        :src="place.image_url || defaultImage"
-        class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
-      />
-    </div>
 
-    <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-900 mb-1">
-        {{ place.name }}
-      </h3>
+<div
+class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer group"
+@click="$router.push('/place/'+place.id)"
+>
 
-      <p class="text-sm text-gray-500 mb-2">
-        {{ place.region }}
-      </p>
+<div class="relative">
 
-      <div class="text-sm font-medium text-yellow-500">
-        ⭐ {{ place.avg_rating }} ({{ place.total_reviews }})
-      </div>
-    </div>
-  </router-link>
+<img
+:src="place.images?.[0]"
+class="h-56 w-full object-cover group-hover:scale-105 transition"
+/>
+
+<div
+class="absolute top-3 right-3 bg-white/80 backdrop-blur px-2 py-1 rounded-lg text-sm"
+>
+⭐ {{ place.avg_rating }}
+</div>
+
+</div>
+
+<div class="p-4">
+
+<h3 class="font-semibold text-lg">
+{{ place.name }}
+</h3>
+
+<p class="text-gray-500 text-sm">
+📍 {{ place.region }}
+</p>
+
+</div>
+
+</div>
+
 </template>
 
 <script setup>
-defineProps(["place"]);
-const defaultImage = "https://images.unsplash.com/photo-1505764706515-aa95265c5abc";
+defineProps({ place:Object })
 </script>
-
-<style scoped>
-.card {
-  border-radius: 16px;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition: 0.2s;
-}
-.card:hover {
-  transform: translateY(-5px);
-}
-img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-</style>

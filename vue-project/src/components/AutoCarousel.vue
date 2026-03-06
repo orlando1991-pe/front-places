@@ -21,7 +21,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
-import { usePlaceStore } from "@/stores/place.store";
+import { usePlaceStore } from "../stores/place.store";
 
 const store = usePlaceStore();
 

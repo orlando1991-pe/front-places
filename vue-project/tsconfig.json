@@ -12,5 +12,5 @@
     "types": ["vite/client"],
     "baseUrl": "."
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "src/main.js", "src/router/index.js"]
+  "include": ["src/**/*.ts", "src/**/*.vue", "src/main.js", "src/router/index.js", "src/**/*.d.ts"]
 }
